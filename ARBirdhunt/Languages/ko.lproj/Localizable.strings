@@ -1,0 +1,21 @@
+/*
+  en.strings
+  ARBirdhunt
+
+  Created by Yuki Imai on 2024/10/03.
+  
+*/
+//title
+"Play" = "플레이";
+"How to play" = "플레이 방법";
+"Ranking" = "랭킹";
+"Enter the name" = "이름 입력";
+
+"※Please do not use names that can identify individuals, as their scores and names will be published in the rankings." = "※순위에는 점수와 이름이 공개되므로 개인을 식별할 수 있는 이름은 사용하지 마세요.";
+"Start" = "시작";
+
+//how to play
+
+//result
+"Result" = "결과";
+
