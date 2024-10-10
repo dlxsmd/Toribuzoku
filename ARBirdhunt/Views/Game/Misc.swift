@@ -7,8 +7,8 @@
 
 import SceneKit
 
-let birdObjects: [SCNScene?] = [
+let birdTypes: [SCNScene?] = [
     SCNScene(named: "simple_bird.scn"),
-    SCNScene(named: "chicken_bird.obj"),
+//    SCNScene(named: "chicken_bird.obj"),
     SCNScene(named: "king_bird.usdz")
 ]
