@@ -11,23 +11,20 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     
     var birdNodes: [SCNNode] = []
     var hitBirds:[SCNNode] = []
-
-    var lastTouchedBody: SCNNode?
     
     var delegate: GameViewControllerDelegate!
     
     var sliceSFX: AVAudioPlayer!
+    var swipeParticle: SKEmitterNode!
     
     var birdTimer: Timer?
-
-    var swipeParticle: SKEmitterNode!
     
     let birdTypes: [SCNScene?] = [
         SCNScene(named: "simple_bird.scn"),
-        SCNScene(named: "chicken_bird.obj"),
-        SCNScene(named: "king_bird.usdz")
+        SCNScene(named: "king_bird.usdz"),
+        SCNScene(named: "chicken_bird.obj")
     ]
-    let birdWeights: [Float] = [80, 20] // 出現確率: 80%, 10%, 10%
+    let birdWeights: [Float] = [80, 15, 5] // 出現確率: 80%, 15%, 5%
     var weightedChooser: WeightedChooser!
     
     override func viewDidLoad() {
@@ -120,10 +117,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         }
         print("鳥を削除しました: \(birdNode.name ?? "unknown")")
     }
-    //random appearing
-    //reg normal score - 1pt  80%
-    //cuckoo extra time - 5s 5%
-    //golden high score - normal * 5 pt 15%
+
 
     //ok
     func addBird() {
@@ -162,8 +156,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         // 鳥をカメラの方向に向ける
         newBirdNode.look(at: cameraPosition)
         
-        // スケールを調整（必要に応じて）
-        newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+        // スケールを調整(3dmodelによって適切な大きさに調整)
+        switch chosenIndex {
+        case 0:
+            newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+        case 1:
+            newBirdNode.scale = SCNVector3(0.1, 0.1, 0.1)
+        case 2:
+            newBirdNode.scale = SCNVector3(0.5, 0.5, 0.5)
+            default:
+            newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+        }
+        
         
         newBirdNode.name = "bird"
         arView.scene.rootNode.addChildNode(newBirdNode)
@@ -175,15 +179,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         
         print("鳥を追加: \(birdType)")
     }
-
-//
-//    func createDiagonalFlyingAction() -> SCNAction {
-//        let movePath = SCNAction.sequence([
-//            SCNAction.move(by: SCNVector3(1, 1, 0), duration: 1.0),
-//            SCNAction.move(by: SCNVector3(-1, -1, 0), duration: 1.0)
-//        ])
-//        return SCNAction.repeatForever(movePath)
-//    }
     
     func createRealisticFlyingAction() -> SCNAction {
             let randomRotation = SCNAction.rotateBy(x: 0,

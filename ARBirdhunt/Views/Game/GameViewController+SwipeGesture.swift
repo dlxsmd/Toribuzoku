@@ -33,38 +33,7 @@ extension GameViewController: ARSessionDelegate {
             SCNHitTestOption.boundingBoxOnly: true,
             SCNHitTestOption.ignoreHiddenNodes: false
         ])
-        /*
-        if let result = hitTestResults.first {
-            let node = result.node
-            print("スワイプ中にヒットしたノード: \(node.name ?? "unknown")")
-            
-            if node.name?.contains("Object") == true || node.name?.contains("Mesh") == true {
-                if let birdNode = birdNodes.first(where: { $0 == node || $0.childNodes.contains(node) }) {
-                    if !hitBirds.contains(birdNode) {
         
-                        hitBirds.append(birdNode)
-                        
-                        if node.name?.contains("Object") == true {
-                            delegate.score += 390
-                        } else if node.name?.contains("Mesh") == true {
-                            delegate.score += 3900
-                        }
-                        
-                        print("スワイプ中に倒した! スコア: \(delegate.score)")
-                        
-                        removeBird(birdNode)
-                        print("鳥を削除しました: \(birdNode.name ?? "unknown")")
-                        addBird()
-                        print("新しい鳥を追加しました")
-                        startBirdTimer()
-                        
-                        print("新しい鳥を追加しました")
-                    } else {
-                        print("この鳥は既に当たっています")
-                    }
-                }
-            }
-         */
         for result in hitTestResults {
                 let node = result.node
                 print("スワイプ中にヒットしたノード: \(node.name ?? "unknown")")
@@ -82,6 +51,8 @@ extension GameViewController: ARSessionDelegate {
                         delegate.score += 390
                     } else if node.name?.contains("Mesh") == true {
                         delegate.score += 3900
+                    }else if node.name?.contains("Black") == true {
+                        delegate.timeRemaining += 5
                     }
                     
                     print("スワイプ中に倒した! スコア: \(delegate.score)")

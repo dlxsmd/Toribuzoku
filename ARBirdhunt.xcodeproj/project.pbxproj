@@ -7,10 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B681F4F82CB9377500AD16B6 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B681F4952CB92F1A00AD16B6 /* XCTest.framework */; platformFilter = ios; };
 		B6E232C12CADBAD100F041F5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B6E232C02CADBAD100F041F5 /* Alamofire */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B681F4F32CB9377000AD16B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6D195E02CA3907100A7C4FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6D195E72CA3907100A7C4FD;
+			remoteInfo = ARBirdhunt;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		B681F4952CB92F1A00AD16B6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		B681F4EF2CB9377000AD16B6 /* ARBirdhuntTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARBirdhuntTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D195E82CA3907100A7C4FD /* ARBirdhunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARBirdhunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -25,10 +38,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B681F4F02CB9377000AD16B6 /* ARBirdhuntTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ARBirdhuntTests; sourceTree = "<group>"; };
 		B6D195EA2CA3907100A7C4FD /* ARBirdhunt */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B6E2321E2CAD3AFB00F041F5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ARBirdhunt; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B681F4EC2CB9377000AD16B6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B681F4F82CB9377500AD16B6 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B6D195E52CA3907100A7C4FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -40,11 +62,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B681F4942CB92F1A00AD16B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B681F4952CB92F1A00AD16B6 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B6D195DF2CA3907100A7C4FD = {
 			isa = PBXGroup;
 			children = (
 				B6D195EA2CA3907100A7C4FD /* ARBirdhunt */,
+				B681F4F02CB9377000AD16B6 /* ARBirdhuntTests */,
 				B6D195E92CA3907100A7C4FD /* Products */,
+				B681F4942CB92F1A00AD16B6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				B6D195E82CA3907100A7C4FD /* ARBirdhunt.app */,
+				B681F4EF2CB9377000AD16B6 /* ARBirdhuntTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,6 +92,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B681F4EE2CB9377000AD16B6 /* ARBirdhuntTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B681F4F52CB9377000AD16B6 /* Build configuration list for PBXNativeTarget "ARBirdhuntTests" */;
+			buildPhases = (
+				B681F4EB2CB9377000AD16B6 /* Sources */,
+				B681F4EC2CB9377000AD16B6 /* Frameworks */,
+				B681F4ED2CB9377000AD16B6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B681F4F42CB9377000AD16B6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B681F4F02CB9377000AD16B6 /* ARBirdhuntTests */,
+			);
+			name = ARBirdhuntTests;
+			packageProductDependencies = (
+			);
+			productName = ARBirdhuntTests;
+			productReference = B681F4EF2CB9377000AD16B6 /* ARBirdhuntTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B6D195E72CA3907100A7C4FD /* ARBirdhunt */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B6D195F72CA3907500A7C4FD /* Build configuration list for PBXNativeTarget "ARBirdhunt" */;
@@ -92,6 +148,10 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					B681F4EE2CB9377000AD16B6 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = B6D195E72CA3907100A7C4FD;
+					};
 					B6D195E72CA3907100A7C4FD = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -118,11 +178,19 @@
 			projectRoot = "";
 			targets = (
 				B6D195E72CA3907100A7C4FD /* ARBirdhunt */,
+				B681F4EE2CB9377000AD16B6 /* ARBirdhuntTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B681F4ED2CB9377000AD16B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B6D195E62CA3907100A7C4FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,6 +201,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B681F4EB2CB9377000AD16B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B6D195E42CA3907100A7C4FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -142,7 +217,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B681F4F42CB9377000AD16B6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6D195E72CA3907100A7C4FD /* ARBirdhunt */;
+			targetProxy = B681F4F32CB9377000AD16B6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		B681F4F62CB9377000AD16B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6S6UY8Z93P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dlxsmd.ARBirdhuntTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARBirdhunt.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ARBirdhunt";
+			};
+			name = Debug;
+		};
+		B681F4F72CB9377000AD16B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6S6UY8Z93P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dlxsmd.ARBirdhuntTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARBirdhunt.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ARBirdhunt";
+			};
+			name = Release;
+		};
 		B6D195F82CA3907500A7C4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -331,6 +450,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B681F4F52CB9377000AD16B6 /* Build configuration list for PBXNativeTarget "ARBirdhuntTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B681F4F62CB9377000AD16B6 /* Debug */,
+				B681F4F72CB9377000AD16B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B6D195E32CA3907100A7C4FD /* Build configuration list for PBXProject "ARBirdhunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
