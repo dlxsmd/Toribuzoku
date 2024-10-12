@@ -27,6 +27,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     let birdWeights: [Float] = [80, 15, 5] // 出現確率: 80%, 15%, 5%
     var weightedChooser: WeightedChooser!
     
+    var rotationeulerAngles = SCNVector3(0, 0, 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,6 +68,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         
         //重み付き抽選の初期化
         weightedChooser = WeightedChooser(weights: birdWeights)
+        
+        //arviewの初期設定
+        let configuration = ARWorldTrackingConfiguration()
+        arView.session.run(configuration)
+        arView.session.delegate = self
 
         
         view.addSubview(arView)
@@ -74,9 +81,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let configuration = ARWorldTrackingConfiguration()
-        arView.session.run(configuration)
-        arView.session.delegate = self
         
         startBirdTimer()
         timelimit()
@@ -160,19 +164,23 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         switch chosenIndex {
         case 0:
             newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+            rotationeulerAngles = SCNVector3(Float.pi, 0, 0)
         case 1:
             newBirdNode.scale = SCNVector3(0.1, 0.1, 0.1)
+            rotationeulerAngles = SCNVector3(0, 0, Float.pi / 2)
         case 2:
             newBirdNode.scale = SCNVector3(0.5, 0.5, 0.5)
+            rotationeulerAngles = SCNVector3(0, 0, 0)
             default:
             newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+            rotationeulerAngles = SCNVector3(0, 0, 0)
         }
         
         
         newBirdNode.name = "bird"
         arView.scene.rootNode.addChildNode(newBirdNode)
         
-        let moveAction = createRealisticFlyingAction()
+        let moveAction = createRealisticFlyingAction(fixedDistanceFromCamera: 10.0)
         newBirdNode.runAction(moveAction)
         
         birdNodes.append(newBirdNode)
@@ -180,35 +188,77 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         print("鳥を追加: \(birdType)")
     }
     
-    func createRealisticFlyingAction() -> SCNAction {
-            let randomRotation = SCNAction.rotateBy(x: 0,
-                                                    y: CGFloat.random(in: -CGFloat.pi...CGFloat.pi),
-                                                    z: 0,
-                                                    duration: 5.0)
+    func createRealisticFlyingAction(fixedDistanceFromCamera: Float) -> SCNAction {
+        let randomRotation = SCNAction.rotateBy(x: 0,
+                                                y: CGFloat.random(in: -CGFloat.pi...CGFloat.pi),
+                                                z: 0,
+                                                duration: 5.0)
 
-            let moveRandomly = SCNAction.run { node in
-                let moveDistance: Float = 2.0 // 移動距離を小さくする
-                let randomX = Float.random(in: -moveDistance...moveDistance)
-                let randomY = Float.random(in: -moveDistance...moveDistance)
-                let fixedZPosition: Float = -2.0 // Z軸の位置を固定
-                let newPosition = SCNVector3(randomX, randomY, fixedZPosition)
-                let moveAction = SCNAction.move(to: newPosition, duration: 5.0)
-                node.runAction(moveAction)
-            }
-
-            let moveAndRotate = SCNAction.sequence([randomRotation, moveRandomly])
-            return SCNAction.repeatForever(moveAndRotate)
+        let moveRandomly = SCNAction.run { node in
+            let moveDistance: Float = 2.0 // 移動距離を小さくする
+            let randomX = Float.random(in: -moveDistance...moveDistance)
+            let randomY = Float.random(in: -moveDistance...moveDistance)
+            
+            // カメラからの距離を固定するために、球面座標系を使用
+            let theta = atan2(randomY, randomX)
+            let phi = acos(randomY / fixedDistanceFromCamera)
+            
+            let newX = fixedDistanceFromCamera * sin(phi) * cos(theta)
+            let newY = fixedDistanceFromCamera * sin(phi) * sin(theta)
+            let newZ = fixedDistanceFromCamera * cos(phi)
+            
+            let newPosition = SCNVector3(newX, newY, -newZ) // Z軸を反転させて手前に表示
+            let moveAction = SCNAction.move(to: newPosition, duration: 5.0)
+            node.runAction(moveAction)
         }
+
+        let moveAndRotate = SCNAction.sequence([randomRotation, moveRandomly])
+        return SCNAction.repeatForever(moveAndRotate)
+    }
     
     func timelimit() {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             self.delegate.timeRemaining -= 1
             if self.delegate.timeRemaining <= 0 {
+                self.delegate.score = self.delegate.normalBirdCount * 390 + self.delegate.specialBirdCount * 3900
                 timer.invalidate()
-                self.delegate.gameOver = true
+                self.birdTimer?.invalidate()
                 self.arView.session.pause()
+                self.delegate.gameOver = true
+                
             }
         }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        updateBirdOrientation()
+    }
+
+    func updateBirdOrientation() {
+        guard let birdNode = birdNodes.first, let cameraNode = arView.pointOfView else { return }
+        
+        // カメラの位置を取得
+        let cameraPosition = cameraNode.worldPosition
+        
+        // 鳥の位置を取得
+        let birdPosition = birdNode.worldPosition
+        
+        // カメラから鳥への方向ベクトルを計算
+        let directionToCamera = SCNVector3(
+            x: cameraPosition.x - birdPosition.x,
+            y: 0, // Y軸回転のみを考慮する場合
+            z: cameraPosition.z - birdPosition.z
+        )
+    
+        // 鳥をカメラの方向に向ける
+        birdNode.look(at: SCNVector3(
+            x: birdPosition.x + directionToCamera.x,
+            y: birdPosition.y,
+            z: birdPosition.z + directionToCamera.z
+        ))
+            
+        birdNode.eulerAngles = rotationeulerAngles
+
     }
     
 
@@ -224,6 +274,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         print("ARセッションが再開されました。")
     }
 }
+
 
 
 

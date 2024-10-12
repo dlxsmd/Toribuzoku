@@ -8,6 +8,7 @@
 import SwiftUI
 import ARKit
 
+//MARK: - SwipeGesture
 extension GameViewController: ARSessionDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -34,9 +35,9 @@ extension GameViewController: ARSessionDelegate {
             SCNHitTestOption.ignoreHiddenNodes: false
         ])
         
-        for result in hitTestResults {
-                let node = result.node
-                print("スワイプ中にヒットしたノード: \(node.name ?? "unknown")")
+        if let result = hitTestResults.first {
+            let node = result.node
+            print("スワイプ中にヒットしたノード: \(node.name ?? "unknown")")
                 
             if let birdNode = birdNodes.first(where: { birdNode in
                 birdNode.name == node.name ||
@@ -48,9 +49,9 @@ extension GameViewController: ARSessionDelegate {
                     hitBirds.insert(birdNode, at: 0)
                     
                     if node.name?.contains("Object") == true {
-                        delegate.score += 390
+                        delegate.normalBirdCount += 1
                     } else if node.name?.contains("Mesh") == true {
-                        delegate.score += 3900
+                        delegate.specialBirdCount += 1
                     }else if node.name?.contains("Black") == true {
                         delegate.timeRemaining += 5
                     }
@@ -63,7 +64,6 @@ extension GameViewController: ARSessionDelegate {
                     
                     print("新しい鳥を追加しました")
         
-                    break // 一度ヒットしたら処理を終了
                 }
             }
         }

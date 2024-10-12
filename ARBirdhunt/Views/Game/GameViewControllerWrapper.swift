@@ -10,6 +10,8 @@ import SwiftUI
 class GameData: ObservableObject {
     @Published var gameBegan: Bool = false
     @Published var gameOver: Bool = false
+    @Published var normalBirdCount: Int = 0
+    @Published var specialBirdCount: Int = 0
     @Published var score: Int = 0
     @Published var isHighScore: Bool = false
     @Published var timeRemaining: Int = 60
@@ -37,6 +39,18 @@ struct GameViewControllerWrapper: UIViewControllerRepresentable {
         var gameOver: Bool = false {
             didSet {
                 gameData.gameOver = gameOver
+            }
+        }
+        
+        var normalBirdCount: Int = 0 {
+            didSet {
+                gameData.normalBirdCount += normalBirdCount
+            }
+        }
+        
+        var specialBirdCount: Int = 0 {
+            didSet {
+                gameData.specialBirdCount += specialBirdCount
             }
         }
         
@@ -76,6 +90,8 @@ struct GameViewControllerWrapper: UIViewControllerRepresentable {
 protocol GameViewControllerDelegate {
     var gameBegan: Bool { get set }
     var gameOver: Bool { get set }
+    var normalBirdCount: Int { get set }
+    var specialBirdCount: Int { get set }
     var score: Int { get set }
     var isHighScore: Bool { get set }
     var timeRemaining: Int { get set }
