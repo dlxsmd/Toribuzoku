@@ -1,34 +1,31 @@
 //
-//  HighScoreUpdateView.swift
+//  UserRegistrationView.swift
 //  ARBirdhunt
 //
-//  Created by Yuki Imai on 2024/10/07.
+//  Created by Yuki Imai on 2024/09/25.
 //
 
 import SwiftUI
 
-struct HighScoreUpdateView: View {
-    @EnvironmentObject var localizableManager: LocalizableManager
+struct UserRegistrationView: View {
+    //シングルトンインスタンスを使用
+    @StateObject private var vm = Networking.shared
     @EnvironmentObject var soundManager: SoundManager
-
-    @ObservedObject var gameData: GameData //GameViewControllerを観察
-    @StateObject private var userManagerModel = UserManagerModel.shared
     
-    @State var Email: String = ""
-    
-    
+    @State private var isStartGame = false
+    @Binding var isStart:Bool
     var body: some View {
         ZStack{
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
             ZStack(alignment:.topTrailing){
                 VStack{
-                    Text("メールアドレスを入力してね".localized())
-                        .font(.custom("Kaisei Opti", size: 18))
+                    Text("Enter the name".localized())
+                        .font(.custom("Kaisei Opti", size: 25))
                         .padding(.bottom,50)
                     
                     VStack{
-                        TextField("yakitori@jec.ac.jp", text: $Email)
+                        TextField("焼き鳥　戦士", text: $vm.userName)
                             .textFieldStyle(.plain)
                             .multilineTextAlignment(.center)
                         
@@ -39,15 +36,16 @@ struct HighScoreUpdateView: View {
                             .frame(width: 250)
                     }
                     
+                    
                     Button(action: {
+                        isStartGame.toggle()
                         DispatchQueue.main.async {
-                            userManagerModel.updateUserName(Email)
-                            soundManager.playSE(fileName: "start")
-                            soundManager.stopBGM()
-                            gameData.isHighScore.toggle()
+//                            soundManager.playSE(fileName: "start")
+//                            soundManager.stopBGM()
+                            
                         }
                     }) {
-                        Text("Send".localized())
+                        Text("Start".localized())
                             .font(.custom("Kaisei Opti", size: 15))
                             .foregroundColor(.white)
                             .padding()
@@ -55,26 +53,29 @@ struct HighScoreUpdateView: View {
                             .background(Color(red: 253/255, green: 88/255, blue: 69/255))
                             .cornerRadius(40)
                         
-                    }.disabled(Email.isEmpty)
+                    }.disabled(vm.userName.isEmpty)
                         .padding(.top,10)
                     
                 }
                 .padding(50)
                 .background(Color(red: 240/255, green: 240/255, blue: 240/255))
-                .cornerRadius(80)
+                .cornerRadius(100)
                 
                 Button(action: {
                     soundManager.playSE(fileName: "tap")
-                    gameData.isHighScore.toggle()
+                    isStart.toggle()
                 }) {
                     Image("CancelButton")
                 }
                 
             }.frame(width:UIScreen.main.bounds.width-40)
+                .fullScreenCover(isPresented: $isStartGame) {
+                    GameView()
+                }
         }
     }
 }
 
 #Preview {
-    HighScoreUpdateView(gameData: GameData())
+    UserRegistrationView(isStart: .constant(true))
 }

@@ -13,13 +13,23 @@ struct GameManageView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Score: \(gameData.score)") // スコアを表示
-                .font(.title)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.black)
-                .cornerRadius(10)
-                .padding()
+            HStack{
+                HStack{
+                    Image("normalChicken")
+                    Text("x \(gameData.normalBirdCount)")
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .font(.system(size: 25))
+                }
+                Spacer()
+                HStack{
+                    Image("specialChicken")
+                    Text("x \(gameData.specialBirdCount)")
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .font(.system(size: 25))
+                }
+            }.padding()
         }
     }
 }

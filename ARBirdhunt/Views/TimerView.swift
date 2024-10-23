@@ -11,7 +11,7 @@ struct TimerView: View {
 
     @State var timerSeconds = 20
     
-    let customInterval : Int = 60
+    let customInterval : Int = 30
     
     var body: some View {
         
@@ -30,7 +30,7 @@ struct TimerView: View {
                 .stroke(style: StrokeStyle(lineWidth: 15.0, lineCap: .round, lineJoin: .round))
                 .rotationEffect(.degrees(270.0))
                 .foregroundColor(getCircleColor(timerSeconds: gameData.timeRemaining))
-                .animation(.linear)
+                .animation(.linear(duration: 1.0))
             
             Text(String(gameData.timeRemaining))
                 .font(.system(size: 25))

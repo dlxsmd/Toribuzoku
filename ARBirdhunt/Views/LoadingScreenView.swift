@@ -22,7 +22,8 @@ let tipsMessages = [
 struct LoadingScreenView: View {
     @State private var currentImageIndex = 0
     @State private var currentTipsIndex = Int.random(in: 0..<tipsMessages.count)
-
+    @State private var timer: Timer?
+    
     var body: some View {
         ZStack {
             Color.black
@@ -40,7 +41,6 @@ struct LoadingScreenView: View {
 
                 
                 HStack {
-                    // 各場所に対してインジケータと丸を切り替え
                     ForEach(0..<loadingAssets.count) { index in
                         if currentImageIndex == index {
                             Image(loadingAssets[index])
@@ -58,11 +58,23 @@ struct LoadingScreenView: View {
             currentTipsIndex = (currentTipsIndex + 1) % tipsMessages.count
         }
         .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                // 画像インデックスを更新して切り替え
-                currentImageIndex = (currentImageIndex + 1) % loadingAssets.count
-            }
+            startTimer()
         }
+        .onDisappear {
+            stopTimer()
+        }
+    }
+    
+    private func startTimer() {
+        stopTimer() // 既存のタイマーがあれば停止
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            currentImageIndex = (currentImageIndex + 1) % loadingAssets.count
+        }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
 }
 
