@@ -87,3 +87,17 @@ extension SCNVector3 {
         return SCNVector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)
     }
 }
+
+extension DateFormatter{
+    static let normal: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    //dateを渡して任意の形式のdateを返す
+    static func normal(from date: Date) -> String{
+        return normal.string(from: date)
+    }
+}
+

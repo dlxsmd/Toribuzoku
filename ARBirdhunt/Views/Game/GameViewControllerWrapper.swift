@@ -14,7 +14,7 @@ class GameData: ObservableObject {
     @Published var specialBirdCount: Int = 0
     @Published var score: Int = 0
     @Published var isHighScore: Bool = false
-    @Published var timeRemaining: Int = 60
+    @Published var timeRemaining: Int = 30
 }
 
 struct GameViewControllerWrapper: UIViewControllerRepresentable {
@@ -44,13 +44,13 @@ struct GameViewControllerWrapper: UIViewControllerRepresentable {
         
         var normalBirdCount: Int = 0 {
             didSet {
-                gameData.normalBirdCount += normalBirdCount
+                gameData.normalBirdCount = normalBirdCount
             }
         }
         
         var specialBirdCount: Int = 0 {
             didSet {
-                gameData.specialBirdCount += specialBirdCount
+                gameData.specialBirdCount = specialBirdCount
             }
         }
         
@@ -66,7 +66,7 @@ struct GameViewControllerWrapper: UIViewControllerRepresentable {
             }
         }
         
-        var timeRemaining: Int = 60 {
+        var timeRemaining: Int = 30 {
             didSet {
                 gameData.timeRemaining = timeRemaining
             }

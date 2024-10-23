@@ -122,8 +122,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         print("鳥を削除しました: \(birdNode.name ?? "unknown")")
     }
 
-
-    //ok
     func addBird() {
         let chosenIndex = weightedChooser.choose()
         let birdType = birdTypes[chosenIndex]
@@ -221,6 +219,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
             self.delegate.timeRemaining -= 1
             if self.delegate.timeRemaining <= 0 {
                 self.delegate.score = self.delegate.normalBirdCount * 390 + self.delegate.specialBirdCount * 3900
+                print("\(self.delegate.normalBirdCount), \(self.delegate.specialBirdCount), \(self.delegate.score)")
                 timer.invalidate()
                 self.birdTimer?.invalidate()
                 self.arView.session.pause()
