@@ -15,6 +15,8 @@ class GameData: ObservableObject {
     @Published var score: Int = 0
     @Published var isHighScore: Bool = false
     @Published var timeRemaining: Int = 30
+    @Published var currentCombo: Int = 0
+    @Published var comboMultiplier: Double = 1.0
 }
 
 struct GameViewControllerWrapper: UIViewControllerRepresentable {
@@ -71,6 +73,18 @@ struct GameViewControllerWrapper: UIViewControllerRepresentable {
                 gameData.timeRemaining = timeRemaining
             }
         }
+        
+        var currentCombo: Int = 0 {
+            didSet {
+                gameData.currentCombo = currentCombo
+            }
+        }
+        
+        var comboMultiplier: Double = 1.0 {
+            didSet {
+                gameData.comboMultiplier = comboMultiplier
+            }
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -95,4 +109,6 @@ protocol GameViewControllerDelegate {
     var score: Int { get set }
     var isHighScore: Bool { get set }
     var timeRemaining: Int { get set }
+    var currentCombo: Int { get set }
+    var comboMultiplier: Double { get set }
 }

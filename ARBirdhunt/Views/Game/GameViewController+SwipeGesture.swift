@@ -15,7 +15,7 @@ extension GameViewController: ARSessionDelegate {
         guard let touch = touches.first else { return }
         let location = touch.location(in: skView.scene!)
         swipeParticle.position = location
-        swipeParticle.particleBirthRate = 300
+        swipeParticle.particleBirthRate = 400
         
     }
 
@@ -24,9 +24,7 @@ extension GameViewController: ARSessionDelegate {
         
         let locationSKView = touch.location(in: skView.scene!)
         swipeParticle.position = locationSKView
-        
-        playSwipeSFX()
-        
+            
         // スワイプ中の位置でヒットテストを実行
         let swipeLocation = touch.location(in: arView)
         
@@ -46,15 +44,22 @@ extension GameViewController: ARSessionDelegate {
             }) {
                 print("鳥を見つけました")
                 if !hitBirds.contains(birdNode) {
+                    playSwipeSFX()
                     hitBirds.insert(birdNode, at: 0)
                     
                     if node.name?.contains("Object") == true {
                         delegate.normalBirdCount += 1
+                        delegate.score += Int(390.0 * delegate.comboMultiplier)
                     } else if node.name?.contains("Mesh") == true {
                         delegate.specialBirdCount += 1
+                        delegate.score += Int(3900.0 * delegate.comboMultiplier)
                     }else if node.name?.contains("Black") == true {
                         delegate.timeRemaining += 5
                     }
+                    
+                    delegate.currentCombo += 1
+                    updateComboMultiplier()
+                    resetComboTimer()
                     
                     print("スワイプ中に倒した! スコア: \(delegate.score)")
                     
@@ -77,5 +82,22 @@ extension GameViewController: ARSessionDelegate {
         sliceSFX.stop()
         sliceSFX.currentTime = 0.0
         sliceSFX.play()
+    }
+    
+    func updateComboMultiplier() {
+        // コンボ数に応じて倍率を増加
+        delegate.comboMultiplier = min(1.0 + Double(delegate.currentCombo) * 0.1, 3.0) // 最大3倍まで
+    }
+    
+    func resetComboTimer() {
+        comboTimer?.invalidate()
+        comboTimer = Timer.scheduledTimer(withTimeInterval: comboTimelimit, repeats: false, block: { [weak self] _ in
+            self?.resetCombo()
+        })
+    }
+    
+    func resetCombo(){
+        delegate.currentCombo = 0
+        delegate.comboMultiplier = 1.0
     }
 }

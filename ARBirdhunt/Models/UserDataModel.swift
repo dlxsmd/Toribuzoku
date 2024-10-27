@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct FetchUserDataModel: Decodable,Identifiable {
     let id: UUID?
     let name: String

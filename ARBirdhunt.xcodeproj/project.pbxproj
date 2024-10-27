@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B63C18B92CC8DA7E00C6E1EB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B63C18B82CC8DA7E00C6E1EB /* Alamofire */; };
 		B681F4F82CB9377500AD16B6 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B681F4952CB92F1A00AD16B6 /* XCTest.framework */; platformFilter = ios; };
-		B681F5192CBA1DCD00AD16B6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B681F5182CBA1DCD00AD16B6 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B681F5192CBA1DCD00AD16B6 /* Alamofire in Frameworks */,
+				B63C18B92CC8DA7E00C6E1EB /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +132,7 @@
 			);
 			name = ARBirdhunt;
 			packageProductDependencies = (
-				B681F5182CBA1DCD00AD16B6 /* Alamofire */,
+				B63C18B82CC8DA7E00C6E1EB /* Alamofire */,
 			);
 			productName = ARBirdhunt;
 			productReference = B6D195E82CA3907100A7C4FD /* ARBirdhunt.app */;
@@ -171,7 +171,7 @@
 			);
 			mainGroup = B6D195DF2CA3907100A7C4FD;
 			packageReferences = (
-				B681F5172CBA1DCD00AD16B6 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				B63C18B72CC8DA7E00C6E1EB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = B6D195E92CA3907100A7C4FD /* Products */;
 			projectDirPath = "";
@@ -480,20 +480,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B681F5172CBA1DCD00AD16B6 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		B63C18B72CC8DA7E00C6E1EB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.9.1;
+				minimumVersion = 5.10.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B681F5182CBA1DCD00AD16B6 /* Alamofire */ = {
+		B63C18B82CC8DA7E00C6E1EB /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B681F5172CBA1DCD00AD16B6 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = B63C18B72CC8DA7E00C6E1EB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -18,13 +18,15 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     var swipeParticle: SKEmitterNode!
     
     var birdTimer: Timer?
+    var comboTimer: Timer?
+    var comboTimelimit: TimeInterval = 3.0 //コンボ持続時間
     
     let birdTypes: [SCNScene?] = [
         SCNScene(named: "simple_bird.scn"),
         SCNScene(named: "king_bird.usdz"),
         SCNScene(named: "chicken_bird.obj")
     ]
-    let birdWeights: [Float] = [80, 15, 5] // 出現確率: 80%, 15%, 5%
+    let birdWeights: [Float] = [90, 5, 5] // 出現確率: 90%, 5%, 5%
     var weightedChooser: WeightedChooser!
     
     var rotationeulerAngles = SCNVector3(0, 0, 0)
@@ -218,8 +220,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             self.delegate.timeRemaining -= 1
             if self.delegate.timeRemaining <= 0 {
-                self.delegate.score = self.delegate.normalBirdCount * 390 + self.delegate.specialBirdCount * 3900
-                print("\(self.delegate.normalBirdCount), \(self.delegate.specialBirdCount), \(self.delegate.score)")
                 timer.invalidate()
                 self.birdTimer?.invalidate()
                 self.arView.session.pause()

@@ -54,7 +54,7 @@ class Networking: ObservableObject {
                 case .success(let todayhighScores):
                     DispatchQueue.main.async {
                         self.todayhighScores = todayhighScores
-                        print("todayhighScores")
+                        print("todayhighScores: \(todayhighScores)")
                     }
                 case .failure(let error):
                     print("Error fetching high scores: \(error)")

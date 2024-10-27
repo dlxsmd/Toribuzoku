@@ -13,6 +13,10 @@ struct GameManageView: View {
     var body: some View {
         VStack {
             Spacer()
+            Text("Combo: \(gameData.currentCombo) (x\(String(format: "%.1f", gameData.comboMultiplier)))")
+                .foregroundColor(.white)
+                .fontWeight(.bold)
+                .font(.system(size: 30))
             HStack{
                 HStack{
                     Image("normalChicken")

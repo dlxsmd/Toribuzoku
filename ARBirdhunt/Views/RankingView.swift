@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct RankingView: View {
-    @ObservedObject var networking = Networking()
+    @ObservedObject var networking = Networking.shared
     var body: some View {
         VStack{
-            List(networking.highScores){ score in
+            List(networking.allScores){ score in
                 HStack{
                     Text(score.name)
                     Spacer()
