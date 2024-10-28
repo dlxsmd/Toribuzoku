@@ -119,9 +119,16 @@ class Networking: ObservableObject {
     }
     
     func checkSuperior() -> Bool{
-        if highScores.isEmpty {
-            return true
+//        if highScores.isEmpty {
+//            print("HighScores is empty")
+//            return true
+//        }
+        for i in 0..<2 {
+            if userScore > self.highScores[i].score{
+                print("userScore is superior")
+                return true
+            }
         }
-        return highScores.prefix(3).contains { userScore > $0.score }
+        return false
     }
 }

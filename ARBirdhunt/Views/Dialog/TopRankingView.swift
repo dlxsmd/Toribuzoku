@@ -49,10 +49,10 @@ struct TopRankingView: View {
                                 .cornerRadius(10)
                         }
                     }
-                    
+                    .padding(.horizontal,20)
+                    .frame(width:UIScreen.main.bounds.width-40)
                 }
                 .padding(.vertical,40)
-                .padding(.horizontal,20)
                 .background(Color(red: 240/255, green: 240/255, blue: 240/255))
                 .cornerRadius(100)
                 

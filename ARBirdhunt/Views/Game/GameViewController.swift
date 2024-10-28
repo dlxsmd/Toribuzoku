@@ -164,15 +164,15 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         switch chosenIndex {
         case 0:
             newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
-            rotationeulerAngles = SCNVector3(Float.pi, 0, 0)
+            rotationeulerAngles = SCNVector3(0, 0, 0)
         case 1:
-            newBirdNode.scale = SCNVector3(0.1, 0.1, 0.1)
+            newBirdNode.scale = SCNVector3(0.05, 0.05, 0.05)
             rotationeulerAngles = SCNVector3(0, 0, Float.pi / 2)
         case 2:
-            newBirdNode.scale = SCNVector3(0.5, 0.5, 0.5)
+            newBirdNode.scale = SCNVector3(1, 1, 1)
             rotationeulerAngles = SCNVector3(0, 0, 0)
             default:
-            newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+            newBirdNode.scale = SCNVector3(0.01, 0.1, 0.01)
             rotationeulerAngles = SCNVector3(0, 0, 0)
         }
         

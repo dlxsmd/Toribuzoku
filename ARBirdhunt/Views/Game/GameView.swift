@@ -11,9 +11,8 @@ struct GameView: View {
     @StateObject private var gameData = GameData() // Create an instance of GameViewController
     @State private var gameViewController: GameViewController?
     @EnvironmentObject var soundManager: SoundManager
-    
+    @StateObject var vm = Networking.shared
     @State private var isLoading = true
-
 
     var body: some View {
         ZStack {
@@ -46,7 +45,10 @@ struct GameView: View {
                     }
                 }
                 soundManager.playBGM(fileName: "GameBGM")
+                vm.fetchHighScores()
+                vm.fetchTodayTopScore()
             }
+            
         }
         .fullScreenCover(isPresented: $gameData.gameOver){
             ResultView(gameData: gameData)

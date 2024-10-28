@@ -12,8 +12,8 @@ struct HighScoreUpdateView: View {
     @EnvironmentObject var soundManager: SoundManager
 
     @ObservedObject var gameData: GameData //GameViewControllerを観察
-//    @StateObject private var userManagerModel = UserManagerModel.shared
-    
+    @StateObject private var vm = Networking.shared
+
     @State var Email: String = ""
     
     
@@ -28,7 +28,7 @@ struct HighScoreUpdateView: View {
                         .padding(.bottom,50)
                     
                     VStack{
-                        TextField("yakitori@jec.ac.jp", text: $Email)
+                        TextField("yakitori@jec.ac.jp", text: $vm.userEmail)
                             .textFieldStyle(.plain)
                             .multilineTextAlignment(.center)
                         
@@ -41,9 +41,8 @@ struct HighScoreUpdateView: View {
                     
                     Button(action: {
                         DispatchQueue.main.async {
-//                            userManagerModel.updateUserName(Email)
-                            soundManager.playSE(fileName: "start")
-                            soundManager.stopBGM()
+                            soundManager.playSE(fileName: "tap")
+                            vm.registerToScoreboard()
                             gameData.isHighScore.toggle()
                         }
                     }) {
@@ -55,7 +54,7 @@ struct HighScoreUpdateView: View {
                             .background(Color(red: 253/255, green: 88/255, blue: 69/255))
                             .cornerRadius(40)
                         
-                    }.disabled(Email.isEmpty)
+                    }.disabled(vm.userEmail.isEmpty)
                         .padding(.top,10)
                     
                 }
@@ -65,6 +64,7 @@ struct HighScoreUpdateView: View {
                 
                 Button(action: {
                     soundManager.playSE(fileName: "tap")
+                    vm.registerToScoreboard()
                     gameData.isHighScore.toggle()
                 }) {
                     Image("CancelButton")

@@ -40,8 +40,8 @@ struct UserRegistrationView: View {
                     Button(action: {
                         isStartGame.toggle()
                         DispatchQueue.main.async {
-//                            soundManager.playSE(fileName: "start")
-//                            soundManager.stopBGM()
+                            soundManager.playSE(fileName: "start")
+                            soundManager.stopBGM()
                             
                         }
                     }) {

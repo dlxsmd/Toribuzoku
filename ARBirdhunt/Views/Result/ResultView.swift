@@ -27,20 +27,32 @@ struct ResultView: View {
                     Text("Result".localized())
                         .font(.custom("Kaisei Opti", size: 50))
                         .fontWeight(.semibold)
+                    
                     VStack{
                         Text("あなたのスコア: \(gameData.score)")
-                            .font(.custom("Kaisei Opti", size: 20))
-                        Text("390pt x \(gameData.normalBirdCount) = \(390 * gameData.normalBirdCount)pt")
-                            .font(.custom("Kaisei Opti", size: 20))
-                        Text("3900pt x \(gameData.specialBirdCount) = \(3900 * gameData.specialBirdCount)pt")
-                            .font(.custom("Kaisei Opti", size: 20))
+                        
+                        HStack{
+                            Image("normalYakitori")
+                            Text("390pt x \(gameData.normalBirdCount) = \(390 * gameData.normalBirdCount)pt")
+                        }
+                        
+                        HStack{
+                            Image("specialYakitori")
+                            Text("3900pt x \(gameData.specialBirdCount) = \(3900 * gameData.specialBirdCount)pt")
+                        }
+                        
+                        Text("コンボボーナス: \(gameData.score - (390 * gameData.normalBirdCount + 3900 * gameData.specialBirdCount))pt")
+                        
                         Text("計　\(gameData.score)pt")
-                            .font(.custom("Kaisei Opti", size: 20))
                             .underline()
+                        
                         Text("\(DateFormatter.normal(from: Date()))")
                             .font(.caption2)
-                    }
-                    Text("今日のベストスコア: \(vm.todayhighScores.first?.score ?? 0)")
+                        
+                    }.font(.custom("Kaisei Opti", size: 20))
+                        .padding(.vertical,10)
+                    
+                    Text("今日のベストスコア: \(vm.todayhighScores.first?.score ?? 0 > gameData.score ? vm.todayhighScores.first?.score ?? 0 : gameData.score)")
                         .font(.custom("Kaisei Opti", size: 20))
                     Text("今までのベストスコア: \(vm.highScores.first?.score ?? 0)")
                         .font(.custom("Kaisei Opti", size: 20))
@@ -50,6 +62,7 @@ struct ResultView: View {
                         isRetry.toggle()
                     }.disabled(vm.isSubmitting)
                     Button(vm.isSubmitting ? "送信中" : "終了する"){
+                        vm.userEmail = ""
                         vm.userName = ""
                         vm.userScore = 0
                         isTitle.toggle()
@@ -70,10 +83,10 @@ struct ResultView: View {
                     dispatchGroup.enter()
                     DispatchQueue.main.async {
                         vm.userScore = gameData.score
-                        vm.registerToScoreboard()
-                        vm.fetchHighScores()
-                        vm.fetchTodayTopScore()
                         gameData.isHighScore = vm.checkSuperior()
+                        if !gameData.isHighScore{
+                            vm.registerToScoreboard()
+                        }
                         dispatchGroup.leave()
                     }
                     

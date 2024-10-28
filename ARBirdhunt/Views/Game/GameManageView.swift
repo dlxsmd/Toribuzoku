@@ -17,6 +17,7 @@ struct GameManageView: View {
                 .foregroundColor(.white)
                 .fontWeight(.bold)
                 .font(.system(size: 30))
+                .font(.custom("Kaisei Opti", size: 30))
             HStack{
                 HStack{
                     Image("normalChicken")
