@@ -20,7 +20,7 @@ struct UserRegistrationView: View {
                 .ignoresSafeArea()
             ZStack(alignment:.topTrailing){
                 VStack{
-                    Text("Enter the name".localized())
+                    Text("Enter your name".localized())
                         .font(.custom("Kaisei Opti", size: 25))
                         .padding(.bottom,50)
                     

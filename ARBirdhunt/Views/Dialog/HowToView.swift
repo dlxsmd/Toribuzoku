@@ -17,10 +17,10 @@ struct HowToView: View {
                 TabView{
                     ForEach(ruleString.keys.sorted(), id: \.self){ key in
                         VStack{
-                            Text(key)
+                            Text("\(key)".localized())
                                 .font(.custom("Kaisei Opti", size: 20))
                                 .padding(.bottom, 30)
-                            Text(ruleString[key]!)
+                            Text("\(ruleString[key]!)".localized())
                                 .font(.custom("Kaisei Opti", size: 15))
                                 .multilineTextAlignment(.center)
                         }
@@ -44,11 +44,11 @@ struct HowToView: View {
 
 
 let ruleString = [
-    "1：戦いの舞台": "この戦場は、現実と幻が交錯する場所。勇者たちよ、スマートフォンを手に取り、ARの世界へ足を踏み入れよ。",
-                  "2：敵の姿":"空を舞う鳥たちは、我が敵なり。彼らは様々な種類を持ち、それぞれ異なる特性を有す。高得点を狙う者は、王冠を被る鳥を見逃してはならぬ。",
-                  "3：勝利への道": "スワイプすることで、敵を討ち取ることができる。連続して倒すことでコンボが発生し、得点は倍増する。名誉ある戦士となるため、連続攻撃を目指せ！",
-                  "4：時の流れ": "戦いには限りがある。時間延長の特性を持つ鳥を撃ち落とし、戦い続けることが勝利への鍵となる。果敢に挑む者には、運命が微笑むであろう。",
-                  "5：名声と栄光": "高得点を叩き出し、リーダーボードに名を刻め。仲間たちと競い合い、真の勇者となるために、己の力を試せ！",
+    "1: Stage of battle": "This battlefield is a place where reality and illusion intersect. Brave men and women, pick up your smartphones and step into the world of AR.",
+    "2: The enemy": "The birds of the air are my enemies. They come in many varieties, each with different characteristics. Those who aim for a high score should not miss the bird that wears the crown.",
+    "3: Path to Victory": "By swiping, you can take out enemies. Defeat them consecutively to generate combos and double your score. Aim for consecutive attacks to become an honorable warrior!",
+    "4: The passage of time": "The battle is limited. The key to victory is to shoot down the birds with time-extending properties and keep fighting. Fate will smile on those who boldly take up the challenge.",
+    "5: Fame and Glory": "Beat the high scores and etch your name on the leaderboard. Compete with your friends and test your strength to become a true hero!",
 ]
 
 

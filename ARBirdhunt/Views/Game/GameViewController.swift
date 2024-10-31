@@ -19,17 +19,32 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     
     var birdTimer: Timer?
     var comboTimer: Timer?
-    var comboTimelimit: TimeInterval = 3.0 //コンボ持続時間
+    
+    var countDown = 5
+    var countDownTimer: Timer?
+    
+    var countdownLabel: UILabel!
+    var overlayView: UIView!
+    
+    var lastHitTestTime: TimeInterval = 0
+    let hitTestInterval: TimeInterval = 0.1 // 0.1秒ごとにヒットテストを実行
+    
+    var lastUpdateTime: TimeInterval = 0
+    let updateInterval: TimeInterval = 0.1 // 0.1秒ごとに更新
+    
+    var comboTimelimit: TimeInterval = 5.0 //コンボ持続時間
     
     let birdTypes: [SCNScene?] = [
         SCNScene(named: "simple_bird.scn"),
         SCNScene(named: "king_bird.usdz"),
         SCNScene(named: "chicken_bird.obj")
     ]
-    let birdWeights: [Float] = [90, 5, 5] // 出現確率: 90%, 5%, 5%
+    let birdWeights: [Float] = [80, 10, 10] // 出現確率: 80%, 10%, 10%
     var weightedChooser: WeightedChooser!
     
     var rotationeulerAngles = SCNVector3(0, 0, 0)
+    
+    var arrowImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +67,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         skView.backgroundColor = UIColor.clear
         skView.allowsTransparency = true
         
+        //arrow view
+        arrowImageView = UIImageView(image: UIImage(named: "Arrow"))
+        arrowImageView.frame = CGRect(x: view.bounds.width / 2 - 25, y: view.bounds.height / 2, width: 50, height: 50)
+        
         // パーティクルの設定
         swipeParticle = SKEmitterNode(fileNamed: "Slice")!
         let scene = SKScene(size: view.frame.size)
@@ -68,6 +87,19 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         lightNode.position = SCNVector3(0, 10, 10)
         arView.scene.rootNode.addChildNode(lightNode)
         
+        // 半透明の黒背景を作成
+            overlayView = UIView(frame: view.bounds)
+            overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            overlayView.isHidden = true
+            
+            // カウントダウンラベルを作成
+            countdownLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+            countdownLabel.center = view.center
+            countdownLabel.textAlignment = .center
+            countdownLabel.font = UIFont.systemFont(ofSize: 72, weight: .bold)
+            countdownLabel.textColor = .white
+            countdownLabel.isHidden = true
+        
         //重み付き抽選の初期化
         weightedChooser = WeightedChooser(weights: birdWeights)
         
@@ -79,13 +111,16 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         
         view.addSubview(arView)
         view.addSubview(skView)
+        view.addSubview(arrowImageView)
+        view.addSubview(overlayView)
+        view.addSubview(countdownLabel)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         startBirdTimer()
-        timelimit()
+        prepareTimer()
         
     }
 
@@ -106,12 +141,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         birdTimer?.invalidate()
         birdTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            
             if let firstBird = self.birdNodes.first {
                 self.removeBird(firstBird)
             }
-            
             self.addBird()
+
+            
         }
     }
 
@@ -123,7 +158,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         }
         print("鳥を削除しました: \(birdNode.name ?? "unknown")")
     }
-
+    
     func addBird() {
         let chosenIndex = weightedChooser.choose()
         let birdType = birdTypes[chosenIndex]
@@ -131,6 +166,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
             print("鳥のシーンを読み込めませんでした: \(birdType)")
             return
         }
+        
         let newBirdNode = birdScene.rootNode.childNode(withName: "bird", recursively: true) ?? birdScene.rootNode
         
         // カメラの現在の位置と向きを取得
@@ -145,14 +181,29 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         // カメラの前方ベクトルを計算
         let cameraForward = SCNVector3(-cameraTransform.columns.2.x, -cameraTransform.columns.2.y, -cameraTransform.columns.2.z)
         
-        // 鳥を配置する距離（メートル単位）
-        let distanceInFront: Float = 10.0
+        // 鳥を配置する距離の範囲（メートル単位）
+        let minDistance: Float = 5.0
+        let maxDistance: Float = 15.0
+        let randomDistance = Float.random(in: minDistance...maxDistance)
         
-        // 鳥の位置を計算
+        // 鳥の位置をランダムに計算
+        let randomHorizontalAngle = Float.random(in: -Float.pi/4...Float.pi/4)  // 水平方向の角度を制限
+        let randomVerticalAngle = Float.random(in: -Float.pi/6...Float.pi/6)    // 垂直方向の角度を制限
+        
+        let horizontalRotation = SCNMatrix4MakeRotation(randomHorizontalAngle, 0, 1, 0)
+        let verticalRotation = SCNMatrix4MakeRotation(randomVerticalAngle, 1, 0, 0)
+        let combinedRotation = SCNMatrix4Mult(horizontalRotation, verticalRotation)
+        
+        let rotatedForward = SCNVector3(
+            x: cameraForward.x * Float(combinedRotation.m11) + cameraForward.y * Float(combinedRotation.m21) + cameraForward.z * Float(combinedRotation.m31),
+            y: cameraForward.x * Float(combinedRotation.m12) + cameraForward.y * Float(combinedRotation.m22) + cameraForward.z * Float(combinedRotation.m32),
+            z: cameraForward.x * Float(combinedRotation.m13) + cameraForward.y * Float(combinedRotation.m23) + cameraForward.z * Float(combinedRotation.m33)
+        )
+        
         let birdPosition = SCNVector3(
-            cameraPosition.x + cameraForward.x * distanceInFront,
-            cameraPosition.y + cameraForward.y * distanceInFront,
-            cameraPosition.z + cameraForward.z * distanceInFront
+            cameraPosition.x + rotatedForward.x * randomDistance,
+            cameraPosition.y + rotatedForward.y * randomDistance,
+            cameraPosition.z + rotatedForward.z * randomDistance
         )
         
         newBirdNode.position = birdPosition
@@ -164,58 +215,67 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
         switch chosenIndex {
         case 0:
             newBirdNode.scale = SCNVector3(0.01, 0.01, 0.01)
+            newBirdNode.name = "normalBird"
             rotationeulerAngles = SCNVector3(0, 0, 0)
         case 1:
             newBirdNode.scale = SCNVector3(0.05, 0.05, 0.05)
-            rotationeulerAngles = SCNVector3(0, 0, Float.pi / 2)
+            newBirdNode.name = "specialBird"
+            rotationeulerAngles = SCNVector3(0, 0, 0)
         case 2:
             newBirdNode.scale = SCNVector3(1, 1, 1)
+            newBirdNode.name = "timerBird"
             rotationeulerAngles = SCNVector3(0, 0, 0)
-            default:
+        default:
             newBirdNode.scale = SCNVector3(0.01, 0.1, 0.01)
+            newBirdNode.name = "normalBird"
             rotationeulerAngles = SCNVector3(0, 0, 0)
         }
         
-        
-        newBirdNode.name = "bird"
         arView.scene.rootNode.addChildNode(newBirdNode)
         
-        let moveAction = createRealisticFlyingAction(fixedDistanceFromCamera: 10.0)
-        newBirdNode.runAction(moveAction)
+        let moveAction = createRandomFlyingAction()
+           newBirdNode.runAction(moveAction)
         
         birdNodes.append(newBirdNode)
         
-        print("鳥を追加: \(birdType)")
+        print("鳥を追加: \(newBirdNode.name!)")
     }
-    
-    func createRealisticFlyingAction(fixedDistanceFromCamera: Float) -> SCNAction {
-        let randomRotation = SCNAction.rotateBy(x: 0,
-                                                y: CGFloat.random(in: -CGFloat.pi...CGFloat.pi),
-                                                z: 0,
-                                                duration: 5.0)
 
-        let moveRandomly = SCNAction.run { node in
-            let moveDistance: Float = 2.0 // 移動距離を小さくする
-            let randomX = Float.random(in: -moveDistance...moveDistance)
-            let randomY = Float.random(in: -moveDistance...moveDistance)
-            
-            // カメラからの距離を固定するために、球面座標系を使用
-            let theta = atan2(randomY, randomX)
-            let phi = acos(randomY / fixedDistanceFromCamera)
-            
-            let newX = fixedDistanceFromCamera * sin(phi) * cos(theta)
-            let newY = fixedDistanceFromCamera * sin(phi) * sin(theta)
-            let newZ = fixedDistanceFromCamera * cos(phi)
-            
-            let newPosition = SCNVector3(newX, newY, -newZ) // Z軸を反転させて手前に表示
-            let moveAction = SCNAction.move(to: newPosition, duration: 5.0)
-            node.runAction(moveAction)
+    func createRandomFlyingAction(duration: TimeInterval = 2.5, movementRange: CGFloat = 5.0) -> SCNAction {
+        let createRandomMove = {
+            let randomX = CGFloat.random(in: -movementRange...movementRange)
+            let randomY = CGFloat.random(in: -movementRange/2...movementRange/2)
+            let randomZ = CGFloat.random(in: -movementRange...movementRange)
+            return SCNAction.move(by: SCNVector3(randomX, randomY, randomZ), duration: duration)
         }
 
-        let moveAndRotate = SCNAction.sequence([randomRotation, moveRandomly])
-        return SCNAction.repeatForever(moveAndRotate)
+        let moves = (0..<4).map { _ in createRandomMove() }
+        let sequence = SCNAction.sequence(moves)
+        return SCNAction.repeatForever(sequence)
     }
     
+    //countDown to gameStart
+    func prepareTimer(){
+        overlayView.isHidden = false
+        countdownLabel.isHidden = false
+        updateCountdownDisplay()
+        
+        countDownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            self.countDown -= 1
+            self.updateCountdownDisplay()
+            
+            if self.countDown <= 0 {
+                timer.invalidate()
+                self.overlayView.isHidden = true
+                self.countdownLabel.isHidden = true
+                self.timelimit()
+            }
+        }
+    }
+    
+    func updateCountdownDisplay() {
+        countdownLabel.text = "\(countDown)"
+    }
     func timelimit() {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             self.delegate.timeRemaining -= 1
@@ -230,8 +290,45 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ObservableObject,
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        updateBirdOrientation()
+            if time - lastUpdateTime >= updateInterval {
+                updateBirdOrientation()
+                updateArrowDirection()
+                lastUpdateTime = time
+            }
+        }
+    
+    func updateArrowDirection() {
+        guard let birdNode = birdNodes.first, let cameraNode = arView.pointOfView else { return }
+        
+        let cameraPosition = cameraNode.worldPosition
+        let birdPosition = birdNode.worldPosition
+        
+        // カメラから鳥への方向ベクトルを計算
+        let directionToBird = SCNVector3(
+            x: birdPosition.x - cameraPosition.x,
+            y: birdPosition.y - cameraPosition.y,
+            z: birdPosition.z - cameraPosition.z
+        )
+        
+        // カメラの向きを考慮した方向ベクトルを計算
+        let cameraTransform = cameraNode.transform
+        let cameraForward = SCNVector3(-cameraTransform.m31, -cameraTransform.m32, -cameraTransform.m33)
+        let cameraRight = SCNVector3(cameraTransform.m11, cameraTransform.m12, cameraTransform.m13)
+        let cameraUp = SCNVector3(cameraTransform.m21, cameraTransform.m22, cameraTransform.m23)
+        
+        // カメラ空間での鳥の方向を計算
+        let dotForward = SCNVector3DotProduct(directionToBird, cameraForward)
+        let dotRight = SCNVector3DotProduct(directionToBird, cameraRight)
+        
+        // 角度を計算
+        let angle = atan2(dotRight, dotForward)
+        
+        // UIImageViewを回転
+        DispatchQueue.main.async {
+            self.arrowImageView.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+        }
     }
+        
 
     func updateBirdOrientation() {
         guard let birdNode = birdNodes.first, let cameraNode = arView.pointOfView else { return }

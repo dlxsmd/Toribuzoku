@@ -6,16 +6,55 @@
   
 */
 //title
+"Burakumin" = "部落民";
 "Play" = "开始";
 "Ranking" = "排名";
 "How to play" = "如何玩";
-"Enter the name" = "输入名称";
 
+//enter the name dialog
+"Enter your name" = "输入名称";
 "※Please do not use names that can identify individuals, as their scores and names will be published in the rankings." = "※请勿使用可识别个人的姓名，因为他们的分数和姓名将在排名中公布。";
 "Start" = "开始";
-//how to play
+
+//Ranking dialog
+"See overall rankings" = "查看综合排名";
+//highscore update dialog
+"Enter your email" = "输入您的电子邮件地址";
+"Send" = "传动";
+"※The top three in the final ranking will receive an original electronic bird license!" = "※最终成绩前三名将获得电子鸟牌原件！";
+
+// how to play View
+"1: Stage of battle" = "1: 战场";
+
+"This battlefield is a place where reality and illusion intersect. Brave men and women, pick up your smartphones and step into the world of AR." = "这个战场是现实与幻觉交错的地方。 勇敢的人，拿起你的智能手机，走进 AR 世界。";
+
+"2: The enemy" = "2: 敌人";
+
+"The birds of the air are my enemies. They come in many varieties, each with different characteristics. Those who aim for a high score should not miss the bird that wears the crown." = "空中的鸟儿是我的敌人。 它们种类繁多，各有特点。 想要获得高分，就不能错过戴皇冠的鸟儿。";
+
+"3: Path to Victory" = "3: 通往胜利之路";
+
+"By swiping, you can take out enemies. Defeat them consecutively to generate combos and double your score. Aim for consecutive attacks to become an honorable warrior!" = "轻扫即可击败敌人。 连续击败敌人可产生连击并使得分翻倍。 瞄准连续攻击，成为一名光荣的战士！";
+
+"4: The passage of time" = "4: 时间的流逝";
+
+"The battle is limited. The key to victory is to shoot down the birds with time-extending properties and keep fighting. Fate will smile on those who boldly take up the challenge." = "战斗是有限的。 胜利的关键在于击落具有延长时间特性的小鸟，并继续战斗。 命运会眷顾敢于战斗的人。";
+
+"5: Fame and Glory" = "5: 名声和荣耀";
+
+"Beat the high scores and etch your name on the leaderboard. Compete with your friends and test your strength to become a true hero!" = "5：名声与荣耀击败高分，在排行榜上留下你的名字。 与同伴一较高下，检验自己的实力，成为真正的英雄！";
+
+
 
 //result
 "Result" = "结果";
+
+"さん ";
+"Your Score" = "您的分数";
+"ComboBonus" = "组合红利";
+"Best Score of the Day" = "今天的最佳成绩";
+"Best score to date" = "迄今为止的最佳成绩";
+"Retry" = "重试";
+"Back to Title" = "返回标题";
 
 

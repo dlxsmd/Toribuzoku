@@ -82,6 +82,24 @@ extension SCNQuaternion {
     }
 }
 
+// ヘルパー関数
+func SCNVector3DotProduct(_ left: SCNVector3, _ right: SCNVector3) -> Float {
+    return left.x * right.x + left.y * right.y + left.z * right.z
+}
+
+// ヘルパー関数
+func distance(_ v1: SCNVector3, _ v2: SCNVector3) -> Float {
+    let dx = v1.x - v2.x
+    let dy = v1.y - v2.y
+    let dz = v1.z - v2.z
+    return sqrt(dx*dx + dy*dy + dz*dz)
+}
+
+func normalize(_ v: SCNVector3) -> SCNVector3 {
+    let length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+    return SCNVector3(v.x / length, v.y / length, v.z / length)
+}
+
 extension SCNVector3 {
     func cross(_ v: SCNVector3) -> SCNVector3 {
         return SCNVector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)

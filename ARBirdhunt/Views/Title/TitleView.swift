@@ -27,21 +27,33 @@ struct TitleView: View {
                     ParticleView(size: geometry.size)
                 }
                 VStack{
-                    HStack{
-                        Button(action: {
-                            soundManager.playSE(fileName: "tap")
-                            withAnimation{
-                                isSetting.toggle()
+                    VStack(spacing:0){
+                        HStack{
+                            Button(action: {
+                                soundManager.playSE(fileName: "tap")
+                                withAnimation{
+                                    isSetting.toggle()
+                                }
+                            }) {
+                                Image("SettingButton")
+                                    .padding(.horizontal,30)
+                                    .padding(.top,UIScreen.main.bounds.height * 0.10)
+                                
                             }
-                        }) {
-                            Image("SettingButton")
-                                .padding(30)
+                            Spacer()
                         }
-                        Spacer()
+                        Text("鳥武族")
+                            .foregroundColor(.white)
+                            .font(.custom("Kaisei Opti", size: 50))
                     }
-                    Text("鳥武族")
+                    
+                    HStack{
+                        Text("〜")
+                        Text("Burakumin".localized())
+                        Text("〜")
+                    }.font(.custom("Kaisei Opti", size: 25))
                         .foregroundColor(.white)
-                        .font(.custom("Kaisei Opti", size: 50))
+                    
                     Spacer()
                     HStack{
                         Spacer()
@@ -58,34 +70,29 @@ struct TitleView: View {
                 HStack{
                     VStack{
                         
-                        Button {
-                            soundManager.playSE(fileName: "tap")
-                            withAnimation{
-                                isStart.toggle()
+                        commonButtonView(text: "Play".localized(),image: "common_button_rightgreen") {
+                                soundManager.playSE(fileName: "tap")
+                                withAnimation{
+                                    isStart.toggle()
+                                }
                             }
-                        } label: {
-                            ButtonStyleView(text: "Play".localized(), color: Color(red: 96/255, green: 184/255, blue: 74/255))
-
-                        }
-
-                        Button(action: {
+                        
+                        commonButtonView(text: "How to play".localized(),image: "common_button_blue") {
                             soundManager.playSE(fileName: "tap")
-                            // explain the game
                             withAnimation{
                                 isHowTo.toggle()
                             }
-                        }) {
-                            ButtonStyleView(text: "How to play".localized(), color: Color(red: 99/255, green: 171/255, blue: 164/255))
                         }
-
-                        Button {
+                        
+                        commonButtonView(text: "Ranking".localized(),image: "common_button_purple") {
+                            soundManager.playSE(fileName: "tap")
                             withAnimation{
                                 isRanking.toggle()
                             }
-                        } label: {
-                            ButtonStyleView(text: "Ranking".localized(), color: Color(red: 138/255, green: 130/255, blue: 220/255))
                         }
-                    }.padding(.leading,15)
+
+                        
+                    }
                     Spacer()
                 }
                 if isSetting{

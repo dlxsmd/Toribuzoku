@@ -23,7 +23,7 @@ struct HighScoreUpdateView: View {
                 .ignoresSafeArea()
             ZStack(alignment:.topTrailing){
                 VStack{
-                    Text("メールアドレスを入力してね".localized())
+                    Text("Enter your email".localized())
                         .font(.custom("Kaisei Opti", size: 18))
                         .padding(.bottom,50)
                     
@@ -34,7 +34,7 @@ struct HighScoreUpdateView: View {
                         
                         Divider()
                             .frame(width: 250)
-                        Text("※Please do not use names that can identify individuals, as their scores and names will be published in the rankings.".localized())
+                        Text("※最終結果の上位3位には電子版オリジナル鳥免許がもらえます！")
                             .font(.custom("Kaisei Opti", size: 10))
                             .frame(width: 250)
                     }

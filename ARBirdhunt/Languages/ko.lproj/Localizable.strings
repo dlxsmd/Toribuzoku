@@ -6,16 +6,53 @@
   
 */
 //title
+"Burakumin" = "조무족";
 "Play" = "플레이";
 "How to play" = "플레이 방법";
 "Ranking" = "랭킹";
-"Enter the name" = "이름 입력";
 
+//enter the name dialog
+"Enter your name" = "이름 입력";
 "※Please do not use names that can identify individuals, as their scores and names will be published in the rankings." = "※순위에는 점수와 이름이 공개되므로 개인을 식별할 수 있는 이름은 사용하지 마세요.";
 "Start" = "시작";
 
-//how to play
+//Ranking dialog
+"See overall rankings" = "전체 순위 보기";
+//highscore update dialog
+"Enter your email" = "이메일 주소를 입력하세요";
+"Send" = "보내기";
+"※The top three in the final ranking will receive an original electronic bird license!" = "※ 최종 결과 상위 3위는 전자판 오리지널 새 면허증을 받을 수 있습니다!";
+
+// how to play View
+"1: Stage of battle" = "1: 전투의 무대";
+
+"This battlefield is a place where reality and illusion intersect. Brave men and women, pick up your smartphones and step into the world of AR." = "이 전장은 현실과 환상이 교차하는 곳이다. 용사들아, 스마트폰을 들고 AR의 세계로 발을 들여놓아라.";
+
+"2: The enemy" = "2: 적의 모습";
+
+"The birds of the air are my enemies. They come in many varieties, each with different characteristics. Those who aim for a high score should not miss the bird that wears the crown." = "하늘을 나는 새들은 우리의 적이다. 그들은 다양한 종류를 가지고 있으며, 각기 다른 특성을 가지고 있다. 고득점을 노리는 사람은 왕관을 쓴 새를 놓쳐서는 안 된다.";
+
+"3: Path to Victory" = "3: 승리의 길";
+
+"By swiping, you can take out enemies. Defeat them consecutively to generate combos and double your score. Aim for consecutive attacks to become an honorable warrior!" = "스와이프하여 적을 쓰러뜨릴 수 있다. 연속으로 쓰러뜨리면 콤보가 발생하며, 점수는 두 배로 증가한다. 명예로운 전사가 되기 위해 연속 공격을 노려라!";
+
+"4: The passage of time" = "4: 시간의 흐름";
+
+"The battle is limited. The key to victory is to shoot down the birds with time-extending properties and keep fighting. Fate will smile on those who boldly take up the challenge." = "전투에는 한계가 있다. 시간 연장의 특성을 가진 새를 쏘아 죽이고 계속 싸우는 것이 승리의 열쇠다. 과감하게 도전하는 자에게 운명이 웃을 것이다.";
+
+"5: Fame and Glory" = "5: 명성과 영광";
+
+"Beat the high scores and etch your name on the leaderboard. Compete with your friends and test your strength to become a true hero!" = "높은 점수를 획득하고 순위표에 이름을 새겨보세요. 동료들과 경쟁하며 진정한 용사가 되기 위해 자신의 힘을 시험해 보세요!";
+
+
 
 //result
 "Result" = "결과";
 
+"さん ";
+"Your Score" = "당신의 점수";
+"ComboBonus" = "콤보 보너스";
+"Best Score of the Day" = "오늘의 최고 점수";
+"Best score to date" = "역대 최고 점수";
+"Retry" = "재시도";
+"Back to Title" = "제목으로 돌아가기";

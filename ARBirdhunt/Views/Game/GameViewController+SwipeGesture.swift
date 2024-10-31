@@ -42,18 +42,19 @@ extension GameViewController: ARSessionDelegate {
                 birdNode == node ||
                 birdNode.childNode(withName: node.name ?? "", recursively: true) != nil
             }) {
-                print("鳥を見つけました")
                 if !hitBirds.contains(birdNode) {
                     playSwipeSFX()
                     hitBirds.insert(birdNode, at: 0)
+                    removeBird(birdNode)
                     
-                    if node.name?.contains("Object") == true {
+                    
+                    if birdNode.name == "normalBird" {
                         delegate.normalBirdCount += 1
                         delegate.score += Int(390.0 * delegate.comboMultiplier)
-                    } else if node.name?.contains("Mesh") == true {
+                    } else if birdNode.name == "specialBird" {
                         delegate.specialBirdCount += 1
                         delegate.score += Int(3900.0 * delegate.comboMultiplier)
-                    }else if node.name?.contains("Black") == true {
+                    }else if birdNode.name == "timerBird" {
                         delegate.timeRemaining += 5
                     }
                     
@@ -62,8 +63,6 @@ extension GameViewController: ARSessionDelegate {
                     resetComboTimer()
                     
                     print("スワイプ中に倒した! スコア: \(delegate.score)")
-                    
-                    removeBird(birdNode)
                     addBird()
                     startBirdTimer()
                     

@@ -36,11 +36,13 @@ struct TopRankingView: View {
                                         .font(.custom("Kaisei Opti", size: 20))
                                 }.padding(5)
                             }
+                            Text("：")
+                                .font(.custom("Kaisei Opti", size: 25))
                         }.frame(height:145)
-                        Text("：")
-                            .font(.custom("Kaisei Opti", size: 25))
+                            .padding(.bottom,20)
+                        
                         NavigationLink(destination: RankingView()){
-                            Text("全体の順位を見る")
+                            Text("See overall rankings".localized())
                                 .font(.custom("Kaisei Opti", size: 25))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 25)
